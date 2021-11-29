@@ -3,6 +3,7 @@
     package="com.example.gunapplication">
 
     <uses-feature android:name="android.hardware.sensor.light" android:required="true"/>
+    <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true"/>
 
     <application
         android:allowBackup="true"
