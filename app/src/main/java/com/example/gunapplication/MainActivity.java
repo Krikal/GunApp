@@ -93,14 +93,12 @@ public class MainActivity extends AppCompatActivity {
                 //System.out.println("LIGHT: " + event.values[0]);
                 if (event.values[0] < 5){
 
-                    new Handler(getMainLooper()).postDelayed(() -> {
-                        imageView.setImageResource(R.drawable.gun_basic);
-                    }, 1000); // 1 second
+                    new Handler(getMainLooper()).postDelayed(() -> imageView.setImageResource(R.drawable.gun_basic), 1000); // 1 second
 
                     imageView.setImageResource(R.drawable.gun_reload);
                     mp_reload.start();
                     ammoCount = 6;
-                    ammoLabel.setText("Ammo: " + String.valueOf(ammoCount));
+                    ammoLabel.setText("Ammo: " + ammoCount);
 
                 }
             }
@@ -114,22 +112,14 @@ public class MainActivity extends AppCompatActivity {
                 float delta = mAccelCurrent - mAccelLast;
                 mAccel = mAccel * 0.9f + delta;
                 if (mAccel > 12 && ammoCount > 0) {
-                    System.out.println("Shake event detected");
-                    new Handler(getMainLooper()).postDelayed(() -> {
-                        imageView.setImageResource(R.drawable.gun_basic);
-
-                    }, 500); // 0.5 second
+                    //System.out.println("Shake event detected");
+                    new Handler(getMainLooper()).postDelayed(() -> imageView.setImageResource(R.drawable.gun_basic), 500); // 0.5 second
 
                     imageView.setImageResource(R.drawable.gun_fire);
-                    mp_fire.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-                        @Override
-                        public void onCompletion(MediaPlayer mediaPlayer) {
-                            ammoLabel.setText("Ammo: " + String.valueOf(--ammoCount));
-                        }
-                    });
+                    mp_fire.setOnCompletionListener(mediaPlayer -> ammoLabel.setText("Ammo: " + --ammoCount));
                     mp_fire.start();
 
-                    System.out.println(ammoCount);
+                    //System.out.println(ammoCount);
                 }
 
             }
