@@ -90,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         public void onSensorChanged(SensorEvent event) {
 
             if(event.sensor.getType() == Sensor.TYPE_LIGHT){
-                System.out.println("LIGHT: " + event.values[0]);
+                //System.out.println("LIGHT: " + event.values[0]);
                 if (event.values[0] < 5){
 
                     new Handler(getMainLooper()).postDelayed(() -> {
@@ -121,12 +121,17 @@ public class MainActivity extends AppCompatActivity {
                     }, 500); // 0.5 second
 
                     imageView.setImageResource(R.drawable.gun_fire);
+                    mp_fire.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                        @Override
+                        public void onCompletion(MediaPlayer mediaPlayer) {
+                            ammoLabel.setText("Ammo: " + String.valueOf(--ammoCount));
+                        }
+                    });
                     mp_fire.start();
-                    if (mp_fire.isPlaying()){
-                        ammoLabel.setText("Ammo: " + String.valueOf(--ammoCount));
-                    }
+
                     System.out.println(ammoCount);
                 }
+
             }
         }
     };
