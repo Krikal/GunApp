@@ -21,7 +21,9 @@ public class MainActivity extends AppCompatActivity {
 
     MediaPlayer mp_reload;
     MediaPlayer mp_fire;
+    /*ammo*/
     int ammoCount;
+    TextView ammoLabel;
     SensorManager mySensorManager;
 
     /*Shake*/
@@ -38,10 +40,14 @@ public class MainActivity extends AppCompatActivity {
         headerTitle.setText("Fegyver applikáció");
         /*Gun image*/
         imageView = (ImageView) findViewById(R.id.imageView);
+        /*Ammo label*/
+        ammoLabel = (TextView) findViewById(R.id.ammoLabel);
+
         /*reload sound*/
         mp_reload = MediaPlayer.create(getApplicationContext(), R.raw.gun_reload);
         /*fire sound*/
         mp_fire = MediaPlayer.create(getApplicationContext(), R.raw.gun_fire);
+
 
 
         /* Light sensor */
@@ -94,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
                     imageView.setImageResource(R.drawable.gun_reload);
                     mp_reload.start();
                     ammoCount = 6;
+                    ammoLabel.setText("Ammo: " + String.valueOf(ammoCount));
+
                 }
             }
 
@@ -105,15 +113,18 @@ public class MainActivity extends AppCompatActivity {
                 mAccelCurrent = (float) Math.sqrt((double) (x * x + y * y + z * z));
                 float delta = mAccelCurrent - mAccelLast;
                 mAccel = mAccel * 0.9f + delta;
-                if (mAccel > 15 && ammoCount > 0) {
+                if (mAccel > 12 && ammoCount > 0) {
                     System.out.println("Shake event detected");
                     new Handler(getMainLooper()).postDelayed(() -> {
                         imageView.setImageResource(R.drawable.gun_basic);
-                        ammoCount--;
+
                     }, 500); // 0.5 second
 
                     imageView.setImageResource(R.drawable.gun_fire);
                     mp_fire.start();
+                    if (mp_fire.isPlaying()){
+                        ammoLabel.setText("Ammo: " + String.valueOf(--ammoCount));
+                    }
                     System.out.println(ammoCount);
                 }
             }
